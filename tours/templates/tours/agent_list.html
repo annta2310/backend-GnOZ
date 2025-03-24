@@ -1,0 +1,28 @@
+{% extends 'tours/base.html' %}
+
+{% block title %}Agents - Gnoz{% endblock %}
+
+{% block content %}
+    <h2>Agents</h2>
+    
+    {% if agents %}
+        <div>
+            {% for agent in agents %}
+                <div>
+                    <h3><a href="{% url 'agent-detail' agent.pk %}">{{ agent.user.first_name }} {{ agent.user.last_name }}</a></h3>
+                    <p>{{ agent.bio|truncatewords:20 }}</p>
+                    <p>Phone: {{ agent.phone }}</p>
+                    
+                    {% if user.is_authenticated and user.is_admin or user.is_manager %}
+                        <p><a href="{% url 'agent-edit' agent.pk %}">Edit Agent</a></p>
+                    {% elif user.is_agent and agent.user == user %}
+                        <p><a href="{% url 'agent-edit' agent.pk %}">Edit Profile</a></p>
+                    {% endif %}
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No agents available at the moment.</p>
+    {% endif %}
+{% endblock %}

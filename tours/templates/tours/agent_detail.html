@@ -1,0 +1,37 @@
+{% extends 'tours/base.html' %}
+
+{% block title %}{{ agent.user.first_name }} {{ agent.user.last_name }} - Gnoz{% endblock %}
+
+{% block content %}
+    <h2>{{ agent.user.first_name }} {{ agent.user.last_name }}</h2>
+    
+    <div>
+        <p><strong>Bio:</strong> {{ agent.bio }}</p>
+        <p><strong>Phone:</strong> {{ agent.phone }}</p>
+        <p><strong>Profile Picture:</strong></p>
+        {% if agent.profile_pic %}
+            <img src="{{ agent.profile_pic.url }}" alt="{{ agent.user.first_name }} {{ agent.user.last_name }}" width="150">
+        {% else %}
+            <p>No profile picture available.</p>
+        {% endif %}
+    </div>
+    
+    <h3>Tours Managed by {{ agent.user.first_name }}</h3>
+    {% if tours %}
+        <ul>
+            {% for tour in tours %}
+                <li><a href="{% url 'tour-detail' tour.pk %}">{{ tour.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tours managed by this agent.</p>
+    {% endif %}
+    
+    {% if user.is_authenticated and user.is_admin or user.is_manager %}
+        <p><a href="{% url 'agent-edit' agent.pk %}">Edit Agent</a></p>
+    {% elif user.is_agent and agent.user == user %}
+        <p><a href="{% url 'agent-edit' agent.pk %}">Edit Profile</a></p>
+    {% endif %}
+    
+    <p><a href="{% url 'agent-list' %}">Back to Agents</a></p>
+{% endblock %}

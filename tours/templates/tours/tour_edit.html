@@ -1,0 +1,118 @@
+{% extends 'tours/base.html' %}
+
+{% block title %}
+    {% if tour.id %}Edit {{ tour.name }}{% else %}Create New Tour{% endif %} - Gnoz
+{% endblock %}
+
+{% block content %}
+    <h2>{% if tour.id %}Edit Tour{% else %}Create New Tour{% endif %}</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Display form fields -->
+        <div>
+            <label for="{{ form.name.id_for_label }}">Tour Name:</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="error">{{ form.name.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="{{ form.description.id_for_label }}">Description:</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="error">{{ form.description.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="{{ form.agent.id_for_label }}">Agent:</label>
+            {{ form.agent }}
+            {% if form.agent.errors %}
+                <div class="error">{{ form.agent.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="{{ form.total_seats.id_for_label }}">Total Seats:</label>
+            {{ form.total_seats }}
+            {% if form.total_seats.errors %}
+                <div class="error">{{ form.total_seats.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="{{ form.available_seats.id_for_label }}">Available Seats:</label>
+            {{ form.available_seats }}
+            {% if form.available_seats.errors %}
+                <div class="error">{{ form.available_seats.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="{{ form.price.id_for_label }}">Price:</label>
+            {{ form.price }}
+            {% if form.price.errors %}
+                <div class="error">{{ form.price.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="{{ form.start_date.id_for_label }}">Start Date:</label>
+            {{ form.start_date }}
+            {% if form.start_date.errors %}
+                <div class="error">{{ form.start_date.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="{{ form.end_date.id_for_label }}">End Date:</label>
+            {{ form.end_date }}
+            {% if form.end_date.errors %}
+                <div class="error">{{ form.end_date.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% if tour.id %}{% url 'tour-detail' tour.id %}{% else %}{% url 'tour-list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+    </form>
+    
+    <style>
+        /* Add some basic styling for the form */
+        form div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+{% endblock %}

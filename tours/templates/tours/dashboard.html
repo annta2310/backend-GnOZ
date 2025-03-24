@@ -1,0 +1,103 @@
+{% extends 'tours/base.html' %}
+
+{% block title %}Dashboard - Gnoz{% endblock %}
+
+{% block content %}
+    <h2>Dashboard</h2>
+    <p>Welcome, {{ user.first_name }} {{ user.last_name }} ({{ user.get_user_type_display }})</p>
+    
+    {% if user.is_admin %}
+        <section>
+            <h3>Admin Dashboard</h3>
+            
+            <div>
+                <h4>Users</h4>
+                <p>Total Users: {{ users.count }}</p>
+            </div>
+            
+            <div>
+                <h4>Tours</h4>
+                <p>Total Tours: {{ tours.count }}</p>
+                <a href="{% url 'tour-create' %}">Add New Tour</a>
+                <ul>
+                    {% for tour in tours %}
+                        <li>
+                            <a href="{% url 'tour-detail' tour.pk %}">{{ tour.name }}</a>
+                            <a href="{% url 'tour-edit' tour.pk %}">(Edit)</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div>
+                <h4>Agents</h4>
+                <p>Total Agents: {{ agents.count }}</p>
+                <ul>
+                    {% for agent in agents %}
+                        <li>
+                            <a href="{% url 'agent-detail' agent.pk %}">{{ agent }}</a>
+                            <a href="{% url 'agent-edit' agent.pk %}">(Edit)</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    
+    {% elif user.is_manager %}
+        <section>
+            <h3>Manager Dashboard</h3>
+            
+            <div>
+                <h4>Tours</h4>
+                <p>Total Tours: {{ tours.count }}</p>
+                <a href="{% url 'tour-create' %}">Add New Tour</a>
+                <ul>
+                    {% for tour in tours %}
+                        <li>
+                            <a href="{% url 'tour-detail' tour.pk %}">{{ tour.name }}</a>
+                            <a href="{% url 'tour-edit' tour.pk %}">(Edit)</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div>
+                <h4>Agents</h4>
+                <p>Total Agents: {{ agents.count }}</p>
+                <ul>
+                    {% for agent in agents %}
+                        <li>
+                            <a href="{% url 'agent-detail' agent.pk %}">{{ agent }}</a>
+                            <a href="{% url 'agent-edit' agent.pk %}">(Edit)</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    
+    {% elif user.is_agent %}
+        <section>
+            <h3>Agent Dashboard</h3>
+            
+            <div>
+                <h4>Your Profile</h4>
+                <p><a href="{% url 'agent-detail' agent.pk %}">View Profile</a> | 
+                <a href="{% url 'agent-edit' agent.pk %}">Edit Profile</a></p>
+            </div>
+            
+            <div>
+                <h4>Your Tours</h4>
+                <p>Total Tours: {{ tours.count }}</p>
+                <a href="{% url 'tour-create' %}">Add New Tour</a>
+                <ul>
+                    {% for tour in tours %}
+                        <li>
+                            <a href="{% url 'tour-detail' tour.pk %}">{{ tour.name }}</a>
+                            <a href="{% url 'tour-edit' tour.pk %}">(Edit)</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'tours/base.html' %}
+
+{% block title %}{{ tour.name }} - Gnoz{% endblock %}
+
+{% block content %}
+    <h2>{{ tour.name }}</h2>
+    
+    <div>
+        <p>{{ tour.description }}</p>
+        <p><strong>Agent:</strong> <a href="{% url 'agent-detail' tour.agent.pk %}">{{ tour.agent }}</a></p>
+        <p><strong>Available Seats:</strong> {{ tour.available_seats }}/{{ tour.total_seats }}</p>
+        <p><strong>Price:</strong> ${{ tour.price }}</p>
+        <p><strong>Dates:</strong> {{ tour.start_date }} to {{ tour.end_date }}</p>
+        <p><strong>Created:</strong> {{ tour.created_at }}</p>
+        <p><strong>Last Updated:</strong> {{ tour.updated_at }}</p>
+    </div>
+    
+    {% if user.is_authenticated and user.is_admin or user.is_manager %}
+        <p><a href="{% url 'tour-edit' tour.pk %}">Edit Tour</a></p>
+    {% elif user.is_agent and tour.agent.user == user %}
+        <p><a href="{% url 'tour-edit' tour.pk %}">Edit Tour</a></p>
+    {% endif %}
+    
+    <p><a href="{% url 'tour-list' %}">Back to Tours</a></p>
+{% endblock %}
